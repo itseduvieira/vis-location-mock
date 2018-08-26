@@ -1,0 +1,14 @@
+{
+  "name": "vis-location-mock",
+  "version": "1.0.0",
+  "description": "Bot para mock de localização",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "Eduardo Vieira <eduardofelipevieira@gmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "firebase-admin": "^5.5.1"
+  }
+}
