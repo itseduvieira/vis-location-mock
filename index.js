@@ -8,7 +8,7 @@ admin.initializeApp({
     databaseURL: 'https://visual-no-ar.firebaseio.com/'
 })
 
-let campaign = '5b79e392159119117d9d0fdb'
+let campaign = '5b83451816720e0014c3cb55'
 
 let coordinates = {
     'latitude': -54.399748,
@@ -32,36 +32,38 @@ function toFixed (num, fixed) {
 
 function waitAndDo(times) {
     if(times < 1) {
-        active.set(false)
+        active.set(false).then(() => {
+            location.remove().then(() => {
+                admin.app().delete()
+            })
+        })
+    } else {
+        setTimeout(function() {
+            location.set(coordinates)
 
-        admin.app().delete()
+            console.log(`set ${times} ${JSON.stringify(coordinates)}`)
 
-        return
+            let latitude = toFixed((coordinates.latitude + 0.2), 6)
+
+            if(latitude > 89.9) {
+                latitude = -89.9
+            }
+
+            coordinates.latitude = latitude
+
+            let longitude = toFixed((coordinates.longitude + 0.04), 6)
+
+            if(longitude > 179.9) {
+                longitude = -179.9
+            }
+
+            coordinates.longitude = longitude
+
+            coordinates.description = (times % 5 === 0) ? 'City, State 1' : 'Jonas, State 2'
+    
+            waitAndDo(times - 1)
+        }, 2500)
     }
-  
-    setTimeout(function() {
-        location.set(coordinates)
-
-        console.log(`set ${times} ${JSON.stringify(coordinates)}`)
-
-        let latitude = toFixed((coordinates.latitude + 0.2), 6)
-
-        if(latitude > 89.9) {
-            latitude = -89.9
-        }
-
-        coordinates.latitude = latitude
-
-        let longitude = toFixed((coordinates.longitude + (0.04 + (times * 0.001))), 6)
-
-        if(longitude > 179.9) {
-            longitude = -179.9
-        }
-
-        coordinates.longitude = longitude
-  
-        waitAndDo(times - 1)
-    }, 2500)
 }
 
-waitAndDo(50)
+waitAndDo(10)
