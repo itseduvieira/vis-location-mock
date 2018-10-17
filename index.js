@@ -8,7 +8,7 @@ admin.initializeApp({
     databaseURL: 'https://visual-no-ar.firebaseio.com/'
 })
 
-let campaign = '5b8ec78c581ed000142af107'
+let campaign = '5bbebbda9d8c2d8171fc3194'
 
 let coordinates = {
     'latitude': -54.399748,
@@ -66,4 +66,4 @@ function waitAndDo(times) {
     }
 }
 
-waitAndDo(10)
+waitAndDo(100)
