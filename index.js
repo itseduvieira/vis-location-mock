@@ -8,14 +8,10 @@ admin.initializeApp({
     databaseURL: 'https://visual-no-ar.firebaseio.com/'
 })
 
-<<<<<<< HEAD
 let campaign = '5bc1432b3cf2670013274a22'
 // let campaign = '5bbebbda9d8c2d8171fc3194'
 
 let start = new Date().getTime()
-=======
-let campaign = '5bbebbda9d8c2d8171fc3194'
->>>>>>> fd5e6eb960b0d83cb804f99d1c6aee5027618890
 
 let coordinates = {
     'latitude': 0,
@@ -84,8 +80,4 @@ function waitAndDo(times) {
     }
 }
 
-<<<<<<< HEAD
 waitAndDo(1000)
-=======
-waitAndDo(100)
->>>>>>> fd5e6eb960b0d83cb804f99d1c6aee5027618890
