@@ -2,6 +2,10 @@
 
 const admin = require('firebase-admin')
 const serviceAccount = require('./serviceAccountKey.json')
+const {promisify} = require('util')
+const fs = require('fs')
+
+fs.readFileAsync = promisify(fs.readFile)
 
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
@@ -33,7 +37,7 @@ function toFixed (num, fixed) {
     return Math.floor(num * fixed) / fixed;
 }
 
-function waitAndDo(times) {
+function circle(times) {
     if(times < 1) {
         active.set(false).then(() => {
             location.remove().then(() => {
@@ -46,30 +50,6 @@ function waitAndDo(times) {
 
             console.log(`set ${times} ${JSON.stringify(coordinates)}`)
 
-            // let latitude = toFixed((coordinates.latitude + 0.2), 6)
-
-            // if(latitude > 89.9) {
-            //     latitude = -89.9
-            // }
-
-            // coordinates.latitude = latitude
-
-            // let longitude = toFixed((coordinates.longitude + 0.04), 6)
-
-            // if(longitude > 179.9) {
-            //     longitude = -179.9
-            // }
-
-            // coordinates.longitude = longitude
-
-            // let now = new Date().getTime() - start
-
-            // coordinates.longitude = Math.cos(now) * 20
-            // coordinates.latitude = Math.sin(now) * 20
-
-            // coordinates.longitude = toFixed(20 * Math.cos(2 * Math.PI * times / 20), 6)
-            // coordinates.latitude = toFixed(20 * Math.sin(2 * Math.PI * times / 20), 6)
-
             coordinates.longitude = toFixed(20 * Math.cos(2 * Math.PI * times / 100), 6)
             coordinates.latitude = toFixed(20 * Math.sin(2 * Math.PI * times / 100), 6)
 
@@ -80,4 +60,40 @@ function waitAndDo(times) {
     }
 }
 
-waitAndDo(1000)
+async function file() {
+    try {
+        let buffer = await fs.readFileAsync('./history.json')
+        let list = JSON.parse(buffer)
+        let keys = Object.keys(list)
+        let first = list[keys[0]]
+        let base = first.timestamp
+
+        for(let i = 0; i < keys.length; i++) {
+            let coordinates = list[keys[i]]
+            let ms = (coordinates.timestamp - base)
+            base = coordinates.timestamp
+
+            await ((coordinates, ms) => {
+                return new Promise(resolve => {
+                    setTimeout(() => {
+                        coordinates.description = 'City, State 1'
+
+                        location.set(coordinates)
+
+                        console.log(JSON.stringify(coordinates))
+            
+                        resolve()
+                    }, ms)
+                })
+            })(coordinates, ms)
+        }
+    } catch(err) {
+        console.error(err)
+    }
+
+    admin.app().delete()
+}
+
+//circle(1000)
+
+file()
