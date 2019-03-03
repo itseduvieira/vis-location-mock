@@ -12,7 +12,7 @@ admin.initializeApp({
     databaseURL: 'https://visual-no-ar.firebaseio.com/'
 })
 
-let campaign = '5bc1432b3cf2670013274a22'
+let campaign = '5c64544dd1f07400165e7ca2'
 // let campaign = '5bbebbda9d8c2d8171fc3194'
 
 let start = new Date().getTime()
