@@ -12,7 +12,7 @@ admin.initializeApp({
     databaseURL: 'https://visual-no-ar.firebaseio.com/'
 })
 
-let campaign = '5c64544dd1f07400165e7ca2'
+let campaign = '5cb22d3424020391836ede90'
 
 let start = new Date().getTime()
 
@@ -54,7 +54,7 @@ function circle(times) {
 
             coordinates.description = (times % 5 === 0) ? 'City, State 1' : 'Jonas, State 2'
     
-            waitAndDo(times - 1)
+            circle(times - 1)
         }, 1000)
     }
 }
@@ -93,6 +93,6 @@ async function file() {
     admin.app().delete()
 }
 
-//circle(1000)
+circle(1000)
 
-file()
+// file()
